@@ -4,7 +4,7 @@ const urlController = require("../controllers/urlController");
 
 // Define routes
 router.post("/shorten", urlController.createShortUrl);
-router.get("/:shortcode", urlController.redirectUrl);
 router.get("/stats/:shortcode", urlController.getStats);
+router.get("/:shortcode", urlController.redirectUrl);
 
 module.exports = router;
