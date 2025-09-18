@@ -1,4 +1,3 @@
-// controllers/urlController.js
 const ShortUrl = require("../models/schema.js");
 const validUrl = require("valid-url");
 const shortid = require("shortid");
@@ -8,9 +7,18 @@ const { getExpiryDate } = require("../utils/logger.js");
 // POST - Create Short URL
 const createShortUrl = async (req, res) => {
   try {
-    const { url, validity, shortcode } = req.body;
+    let { url, validity, shortcode } = req.body;
 
-    if (!url || !validUrl.isUri(url)) {
+    if (!url) {
+      return res.status(400).json({ error: "URL is required" });
+    }
+
+    // Auto-prepend http:// if missing
+    if (!/^https?:\/\//i.test(url)) {
+      url = "http://" + url;
+    }
+
+    if (!validUrl.isUri(url)) {
       return res.status(400).json({ error: "Invalid URL" });
     }
 
